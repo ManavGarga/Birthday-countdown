@@ -58,6 +58,18 @@ const Birthday = ({ name = 'Manav', day = 22, month = 9 }) => {
     }
   ];
 
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (confettiInterval.current) {
+        clearInterval(confettiInterval.current);
+      }
+      if (celebrationTimeout.current) {
+        clearTimeout(celebrationTimeout.current);
+      }
+    };
+  }, []);
+
   // Custom confetti effect
   useEffect(() => {
     if (isItBday) {
@@ -89,6 +101,7 @@ const Birthday = ({ name = 'Manav', day = 22, month = 9 }) => {
     setShowCelebration(false);
     if (confettiInterval.current) {
       clearInterval(confettiInterval.current);
+      confettiInterval.current = null;
     }
     setConfettiPieces([]);
     setExplosions([]);
@@ -168,9 +181,11 @@ const Birthday = ({ name = 'Manav', day = 22, month = 9 }) => {
     // Clear any existing celebration
     if (confettiInterval.current) {
       clearInterval(confettiInterval.current);
+      confettiInterval.current = null;
     }
     if (celebrationTimeout.current) {
       clearTimeout(celebrationTimeout.current);
+      celebrationTimeout.current = null;
     }
     
     // Start new celebration
@@ -260,11 +275,18 @@ const Birthday = ({ name = 'Manav', day = 22, month = 9 }) => {
   const monthBday = monthNames[birth.getMonth()];
 
   const togglePlay = () => {
-    if (!audioRef.current) return;
+    if (!audioRef.current) {
+      // Create audio element if it doesn't exist
+      audioRef.current = new Audio(birthdaySong);
+    }
+    
     if (isPlaying) {
       audioRef.current.pause();
     } else {
-      audioRef.current.play();
+      audioRef.current.play().catch(error => {
+        console.error("Audio playback failed:", error);
+        showNotification("Couldn't play audio. Click again to retry.");
+      });
     }
     setIsPlaying(!isPlaying);
   };
@@ -305,19 +327,22 @@ const Birthday = ({ name = 'Manav', day = 22, month = 9 }) => {
   };
 
   const answerQuestion = (answerIndex) => {
-    if (answerIndex === quizQuestions[quizQuestion].correct) {
-      setQuizScore(quizScore + 1);
+    const isCorrect = answerIndex === quizQuestions[quizQuestion].correct;
+    const newScore = isCorrect ? quizScore + 1 : quizScore;
+    
+    if (isCorrect) {
       showNotification('Correct answer!');
     } else {
       showNotification('Wrong answer!');
     }
 
     if (quizQuestion < quizQuestions.length - 1) {
+      setQuizScore(newScore);
       setQuizQuestion(quizQuestion + 1);
     } else {
       // Quiz finished
       setShowQuiz(false);
-      showNotification(`Quiz completed! Score: ${quizScore + (answerIndex === quizQuestions[quizQuestion].correct ? 1 : 0)}/${quizQuestions.length}`);
+      showNotification(`Quiz completed! Score: ${newScore}/${quizQuestions.length}`);
       triggerCelebration();
     }
   };
@@ -472,8 +497,6 @@ const Birthday = ({ name = 'Manav', day = 22, month = 9 }) => {
               {isPlaying ? 'Pause Song' : 'Play Birthday Song'}
             </div>
           </div>
-
-          <audio ref={audioRef} src={birthdaySong} />
           
           <div className="action-buttons">
             <button 
