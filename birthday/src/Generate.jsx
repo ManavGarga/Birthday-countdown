@@ -28,7 +28,7 @@ const Generate = () => {
     setIsGenerated(false);
   };
 
-  // Confetti component with improved distribution
+  // Enhanced Confetti component with birthday-themed elements
   const Confetti = () => {
     return (
       <div className="confetti-container">
@@ -36,14 +36,16 @@ const Generate = () => {
           const left = Math.floor(Math.random() * 100);
           const animationDelay = Math.random() * 5;
           const size = Math.floor(Math.random() * 10) + 5;
-          // Gold and dark themed confetti
-          const colors = ['#D4AF37', '#AA8C2C', '#2C2C2C', '#1A1A1A', '#3D3D3D'];
+          // Birthday-themed colors with gold, purple, and blue accents
+          const colors = ['#D4AF37', '#AA8C2C', '#8A2BE2', '#4169E1', '#FF69B4'];
           const color = colors[Math.floor(Math.random() * colors.length)];
+          const shapes = ['circle', 'rect', 'star'];
+          const shape = shapes[Math.floor(Math.random() * shapes.length)];
           
           return (
             <div 
               key={i}
-              className="confetti"
+              className={`confetti ${shape}`}
               style={{
                 left: `${left}%`,
                 width: `${size}px`,
@@ -64,6 +66,7 @@ const Generate = () => {
       
       <div className="card">
         <div className="card-header">
+          <div className="magic-wand">✨</div>
           <h1>Create Birthday Magic</h1>
           <p>Generate a personalized birthday celebration link</p>
         </div>
@@ -102,19 +105,20 @@ const Generate = () => {
                   onChange={(e) => setMonth(e.target.value)}
                   className="input-field select-field"
                 >
-                  <option value="">Select Month</option>
-                  <option value="1">January</option>
-                  <option value="2">February</option>
-                  <option value="3">March</option>
-                  <option value="4">April</option>
-                  <option value="5">May</option>
-                  <option value="6">June</option>
-                  <option value="7">July</option>
-                  <option value="8">August</option>
-                  <option value="9">September</option>
-                  <option value="10">October</option>
-                  <option value="11">November</option>
-                  <option value="12">December</option>
+                   <option value="">Select Month</option>
+                <option value="1">🎂 January</option>
+                <option value="2">💖 February</option>
+                <option value="3">🌸 March</option>
+                <option value="4">🌼 April</option>
+                <option value="5">🌞 May</option>
+                <option value="6">🌈 June</option>
+                <option value="7">🌴 July</option>
+                <option value="8">🍉 August</option>
+                <option value="9">🍁 September</option>
+                <option value="10">🎃 October</option>
+                <option value="11">🍂 November</option>
+                <option value="12">🎄 December</option>
+
                 </select>
               </div>
             </div>
@@ -171,11 +175,11 @@ const Generate = () => {
           display: flex;
           justify-content: center;
           align-items: center;
-          background: linear-gradient(135deg, #0a0a0a 0%, #2c2c2c 100%);
+          background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
           padding: 20px;
           position: relative;
           overflow: hidden;
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          font-family: 'Poppins', sans-serif;
         }
         
         .confetti-container {
@@ -189,54 +193,106 @@ const Generate = () => {
         
         .confetti {
           position: absolute;
-          border-radius: 2px;
           opacity: 0;
           animation: confetti-fall 5s ease-in infinite;
+        }
+        
+        .confetti.circle {
+          border-radius: 50%;
+        }
+        
+        .confetti.rect {
+          border-radius: 2px;
+        }
+        
+        .confetti.star {
+          clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
         }
         
         @keyframes confetti-fall {
           0% {
             opacity: 1;
             top: -10%;
-            transform: rotate(0deg) translateX(0);
+            transform: rotate(0deg) translateX(0) scale(1);
           }
           100% {
             opacity: 0;
             top: 100%;
-            transform: rotate(720deg) translateX(20px);
+            transform: rotate(720deg) translateX(20px) scale(0.5);
           }
         }
         
         .card {
-          background: #1a1a1a;
+          background: rgba(26, 26, 46, 0.8);
+          backdrop-filter: blur(10px);
           border-radius: 20px;
-          box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+          box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5),
+                      0 0 30px rgba(212, 175, 55, 0.2);
           width: 100%;
           max-width: 500px;
           z-index: 2;
           animation: cardEntrance 0.6s ease-out;
           position: relative;
-          border: 1px solid #333;
+          border: 1px solid rgba(212, 175, 55, 0.3);
+          overflow: hidden;
+        }
+        
+        .card::before {
+          content: '';
+          position: absolute;
+          top: -50%;
+          left: -50%;
+          width: 200%;
+          height: 200%;
+          background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+          transform: rotate(0deg);
+          animation: shimmer 8s linear infinite;
+          pointer-events: none;
+        }
+        
+        @keyframes shimmer {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
         }
         
         @keyframes cardEntrance {
           from {
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(30px) scale(0.95);
           }
           to {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
           }
         }
         
         .card-header {
-          background: linear-gradient(135deg, #2c2c2c 0%, #0a0a0a 100%);
+          background: linear-gradient(135deg, rgba(26, 26, 46, 0.9) 0%, rgba(10, 10, 20, 0.9) 100%);
           color: #D4AF37;
           padding: 30px 20px;
           text-align: center;
           border-radius: 20px 20px 0 0;
-          border-bottom: 2px solid #D4AF37;
+          border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+          position: relative;
+        }
+        
+        .magic-wand {
+          font-size: 40px;
+          margin-bottom: 10px;
+          animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0) rotate(0deg);
+          }
+          50% {
+            transform: translateY(-10px) rotate(5deg);
+          }
         }
         
         .card-header h1 {
@@ -244,6 +300,20 @@ const Generate = () => {
           font-size: 28px;
           font-weight: 700;
           text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+          background: linear-gradient(45deg, #D4AF37, #FFD700, #D4AF37);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-size: 200% auto;
+          animation: shimmerText 3s linear infinite;
+        }
+        
+        @keyframes shimmerText {
+          0% {
+            background-position: 0% center;
+          }
+          100% {
+            background-position: 200% center;
+          }
         }
         
         .card-header p {
@@ -271,31 +341,30 @@ const Generate = () => {
           margin-bottom: 8px;
           font-weight: 600;
           color: #D4AF37;
+          text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
         
         .input-field {
           width: 100%;
-          padding: 15px;
-          border: 2px solid #333;
+          border: 2px solid rgba(212, 175, 55, 0.3);
           border-radius: 10px;
           font-size: 16px;
           transition: all 0.3s;
           box-sizing: border-box;
-          background: #2c2c2c;
+          background: rgba(26, 26, 46, 0.6);
           color: #f5f5f5;
+          font-family: 'Poppins', sans-serif;
         }
         
         .input-field::placeholder {
           color: #888;
         }
         
-        /* Special container for the select to handle dropdown overflow */
         .select-wrapper {
           position: relative;
           display: block;
         }
         
-        /* Special styling for the select field */
         .select-field {
           appearance: none;
           -webkit-appearance: none;
@@ -307,14 +376,12 @@ const Generate = () => {
           padding-right: 45px;
         }
         
-        /* Ensure dropdown options are visible outside the card */
         .select-field option {
-          background: #2c2c2c;
+          background: #1a1a2e;
           color: #f5f5f5;
           padding: 10px;
         }
         
-        /* Fix for Firefox to show full dropdown */
         @-moz-document url-prefix() {
           .select-field {
             text-indent: 0;
@@ -325,6 +392,7 @@ const Generate = () => {
           border-color: #D4AF37;
           outline: none;
           box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3);
+          background: rgba(26, 26, 46, 0.8);
         }
         
         .date-inputs-container {
@@ -338,23 +406,17 @@ const Generate = () => {
           min-width: 0;
         }
         
-        /* Ensure month dropdown is fully visible */
         .month-select-container {
           position: relative;
-          z-index: 1000; /* High z-index to ensure dropdown appears above everything */
-        }
-        
-        /* Force the dropdown to render outside the card */
-        .month-select-container select {
-          position: relative;
+          z-index: 1000;
         }
         
         .generate-btn {
           width: 100%;
           padding: 16px;
-          background: linear-gradient(135deg, #2c2c2c 0%, #0a0a0a 100%);
+          background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%);
           color: #D4AF37;
-          border: 2px solid #D4AF37;
+          border: 2px solid rgba(212, 175, 55, 0.5);
           border-radius: 10px;
           font-size: 16px;
           font-weight: 600;
@@ -362,18 +424,41 @@ const Generate = () => {
           transition: all 0.3s;
           margin-top: 10px;
           text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+          font-family: 'Poppins', sans-serif;
+          position: relative;
+          overflow: hidden;
+        }
+        
+        .generate-btn::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+          transition: 0.5s;
+        }
+        
+        .generate-btn:hover::before {
+          left: 100%;
         }
         
         .generate-btn:hover {
           transform: translateY(-2px);
-          background: linear-gradient(135deg, #0a0a0a 0%, #2c2c2c 100%);
+          background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(212, 175, 55, 0.2) 100%);
           box-shadow: 0 7px 14px rgba(212, 175, 55, 0.3);
         }
         
         .generate-btn.generated {
-          background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
-          border-color: #4CAF50;
+          background: linear-gradient(135deg, rgba(76, 175, 80, 0.2) 0%, rgba(76, 175, 80, 0.1) 100%);
+          border-color: rgba(76, 175, 80, 0.5);
           color: #4CAF50;
+        }
+        
+        .generate-btn.generated:hover {
+          background: linear-gradient(135deg, rgba(76, 175, 80, 0.3) 0%, rgba(76, 175, 80, 0.2) 100%);
+          box-shadow: 0 7px 14px rgba(76, 175, 80, 0.3);
         }
         
         .result-container {
@@ -382,8 +467,8 @@ const Generate = () => {
         }
         
         @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
         }
         
         .success-animation {
@@ -438,49 +523,67 @@ const Generate = () => {
         .generated-link {
           flex: 1;
           padding: 12px 15px;
-          border: 2px solid #333;
+          border: 2px solid rgba(212, 175, 55, 0.3);
           border-right: none;
           border-radius: 10px 0 0 10px;
           font-size: 14px;
-          background: #2c2c2c;
+          background: rgba(26, 26, 46, 0.6);
           color: #f5f5f5;
           min-width: 0;
+          font-family: 'Poppins', sans-serif;
         }
         
         .copy-btn {
           padding: 0 20px;
-          background: #2c2c2c;
+          background: rgba(26, 26, 46, 0.6);
           color: #D4AF37;
-          border: 2px solid #D4AF37;
+          border: 2px solid rgba(212, 175, 55, 0.3);
           border-left: none;
           border-radius: 0 10px 10px 0;
           cursor: pointer;
           font-weight: 600;
           transition: all 0.3s;
           white-space: nowrap;
+          font-family: 'Poppins', sans-serif;
         }
         
         .copy-btn:hover {
-          background: #D4AF37;
-          color: #2c2c2c;
+          background: rgba(212, 175, 55, 0.2);
         }
         
         .preview-btn {
           width: 100%;
           padding: 16px;
-          background: #2c2c2c;
+          background: rgba(26, 26, 46, 0.6);
           color: #D4AF37;
-          border: 2px solid #D4AF37;
+          border: 2px solid rgba(212, 175, 55, 0.3);
           border-radius: 10px;
           font-size: 16px;
           font-weight: 600;
           cursor: pointer;
           transition: all 0.3s;
+          font-family: 'Poppins', sans-serif;
+          position: relative;
+          overflow: hidden;
+        }
+        
+        .preview-btn::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+          transition: 0.5s;
+        }
+        
+        .preview-btn:hover::before {
+          left: 100%;
         }
         
         .preview-btn:hover {
-          background: #D4AF37;
-          color: #2c2c2c;
+          background: rgba(212, 175, 55, 0.2);
           transform: translateY(-2px);
         }
         
@@ -496,6 +599,14 @@ const Generate = () => {
           
           .card-header p {
             font-size: 14px;
+          }
+          
+          .form-container {
+            padding: 20px;
+          }
+          
+          .result-container {
+            padding: 0 20px 20px;
           }
         }
       `}</style>
